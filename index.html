@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Filtered To-Do List</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: #b6d5a9;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .container {
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #74284d, #795c96, #244b63);
+      background-size: 400% 400%;
+      animation: gradientMove 12s ease infinite;
+      box-shadow: 0 0 25px rgba(0, 0, 0, 0.886);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 30px;
+      color: white;
+    }
+
+    @keyframes gradientMove {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    h1 {
+      margin-bottom: 10px;
+    }
+
+    .circle-buttons {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .circle-buttons button {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      border: none;
+      background: rgba(0,0,0,0.3);
+      color: #fff;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+
+    .circle-buttons button.active {
+      border: 2px solid #fff;
+    }
+
+    .circle-buttons button:hover {
+      background: rgba(255,255,255,0.2);
+    }
+
+    input[type="text"] {
+      width: 70%;
+      padding: 10px;
+      border-radius: 25px;
+      border: none;
+      outline: none;
+      background-color: rgba(255,255,255,0.2);
+      color: white;
+      margin-bottom: 10px;
+    }
+
+    .add-btn {
+      padding: 8px 20px;
+      background: rgba(0,0,0,0.4);
+      color: white;
+      border: none;
+      border-radius: 25px;
+      margin-bottom: 20px;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+
+    .add-btn:hover {
+      background: rgba(255,255,255,0.3);
+    }
+
+    .task-list {
+      list-style: none;
+      padding: 0;
+      width: 80%;
+      height: 230px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .task-list li {
+      background: rgba(0,0,0,0.3);
+      padding: 10px 15px;
+      border-radius: 50px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: white;
+    }
+
+    .task-list li.completed {
+      text-decoration: line-through;
+      opacity: 0.6;
+    }
+
+    .task-list li span {
+      flex-grow: 1;
+      padding-left: 10px;
+      text-align: left;
+    }
+
+    .task-list li button {
+      background: transparent;
+      border: none;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      margin-left: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>To-Do List</h1>
+    <div class="circle-buttons">
+      <button onclick="setFilter('all')" id="btnAll" class="active">All</button>
+      <button onclick="setFilter('active')" id="btnActive">Active</button>
+      <button onclick="setFilter('done')" id="btnDone">Done</button>
+      <button onclick="clearCompleted()">Clear</button>
+    </div>
+    <input type="text" id="taskInput" placeholder="Add a task..." />
+    <button class="add-btn" onclick="addTask()">Add Task</button>
+    <ul id="taskList" class="task-list"></ul>
+  </div>
+
+  <script>
+    const taskInput = document.getElementById("taskInput");
+    const taskList = document.getElementById("taskList");
+    let tasks = [];
+    let currentFilter = 'all';
+
+    function renderTasks() {
+      taskList.innerHTML = "";
+
+      const filteredTasks = tasks.filter(task => {
+        if (currentFilter === "active") return !task.completed;
+        if (currentFilter === "done") return task.completed;
+        return true;
+      });
+
+      filteredTasks.forEach((task, index) => {
+        const li = document.createElement("li");
+        li.classList.toggle("completed", task.completed);
+        li.innerHTML = `
+          <input type="checkbox" onchange="toggleComplete(${index})" ${task.completed ? "checked" : ""}>
+          <span>${task.text}</span>
+          <button onclick="deleteTask(${index})">✕</button>
+        `;
+        taskList.appendChild(li);
+      });
+    }
+
+    function addTask() {
+      const text = taskInput.value.trim();
+      if (text !== "") {
+        tasks.push({ text, completed: false });
+        taskInput.value = "";
+        renderTasks();
+      }
+    }
+
+    function toggleComplete(index) {
+      tasks[index].completed = !tasks[index].completed;
+      renderTasks();
+    }
+
+    function deleteTask(index) {
+      tasks.splice(index, 1);
+      renderTasks();
+    }
+
+    function setFilter(filter) {
+      currentFilter = filter;
+      document.querySelectorAll(".circle-buttons button").forEach(btn => btn.classList.remove("active"));
+      document.getElementById("btn" + filter.charAt(0).toUpperCase() + filter.slice(1)).classList.add("active");
+      renderTasks();
+    }
+
+    function clearCompleted() {
+      tasks = tasks.filter(task => !task.completed);
+      renderTasks();
+    }
+
+    taskInput.addEventListener("keydown", function (e) {
+      if (e.key === "Enter") addTask();
+    });
+
+    renderTasks();
+  </script>
+</body>
+</html>

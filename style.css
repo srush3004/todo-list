@@ -1,0 +1,127 @@
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Background */
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(to right, #1e1e2f, #2a2a3b);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Main Circular Container - Dark Gradient */
+/* Main Rectangular Container */
+.container {
+  width: 600px;
+  min-height: 550px;
+  border-radius: 20px;
+  background: 
+    linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+    url("https://source.unsplash.com/600x600/?pink,purple,lavender,abstract"); /* 👈 change this image if needed */
+  background-size: cover;
+  background-position: center;
+  padding: 40px 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  color: white;
+  overflow: hidden;
+}
+
+
+
+
+/* Heading */
+.container h1 {
+  font-size: 20px;
+  margin-bottom: 10px;
+  color: #ffffff;
+  text-align: center;
+}
+
+/* Input */
+input[type="text"] {
+  width: 70%;
+  padding: 8px 14px;
+  border: none;
+  border-radius: 999px;
+  font-size: 14px;
+  margin-bottom: 10px;
+  background-color: #e9ace1e5;
+  color: white;
+}
+
+/* Buttons */
+button {
+  padding: 8px 14px;
+  margin: 5px;
+  border: none;
+  border-radius: 999px;
+  background-color: #e0e4d2;
+  color: rgb(33, 29, 29);
+  font-weight: 500;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #d8bbdc;
+}
+
+/* Filters container */
+.filters {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+/* Task list */
+ul {
+  list-style: none;
+  padding: 0;
+  width: 100%;
+  max-height: 150px;
+  overflow-y: auto;
+}
+
+/* Individual task (oval) */
+li {
+  background-color: #555;
+  color: white;
+  border-radius: 999px;
+  padding: 8px 12px;
+  margin: 6px auto;
+  width: 90%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Task text */
+li span {
+  flex: 1;
+  margin-left: 10px;
+}
+
+/* Completed task style */
+.completed {
+  text-decoration: line-through;
+  opacity: 0.6;
+}
+
+/* Scrollbar (optional) */
+ul::-webkit-scrollbar {
+  width: 5px;
+}
+ul::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 5px;
+}
